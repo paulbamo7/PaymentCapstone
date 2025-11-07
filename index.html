@@ -11,10 +11,12 @@
   </head>
   <body>
     <h1>GCash payment received ✅</h1>
-    <p>You can return to Coftea POS to continue the order.</p>
+    <p>You can return to Coftea POS to finish the order.</p>
+
     <a class="cta" href="cofteapos://payment-success">Back to Coftea POS</a>
 
     <script>
+      // try auto-return after 1.5 seconds; if it’s blocked the button still works
       setTimeout(() => window.location.href = 'cofteapos://payment-success', 1500);
     </script>
   </body>
