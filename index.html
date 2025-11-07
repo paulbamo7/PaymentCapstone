@@ -30,27 +30,28 @@
 
     <button class="cta" onclick="notifyAndReturn()">Back to Coftea POS</button>
 
-    <script>
-      const params   = new URLSearchParams(window.location.search);
-      const sourceId = params.get("source_id");
+   <button class="cta" onclick="notifyAndReturn()">Back to Coftea POS</button>
 
-      async function notifyAndReturn() {
-        if (sourceId) {
-          try {
-            await fetch("https://dozier-arthur-wistfully.ngrok-free.dev/payment-status/back-to-pos", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ sourceId, status: "paid" })
-            });
-          } catch (err) {
-            console.warn("Bridge notify failed", err);
-          }
-        }
-        window.location.href = "cofteapos://payment-success";
+  <script>
+    const params   = new URLSearchParams(window.location.search);
+    const sourceId = params.get("source_id");
+
+    async function notifyAndReturn() {
+      if (sourceId) {
+        try {
+          await fetch("https://dozier-arthur-wistfully.ngrok-free.dev/payment-status/back-to-pos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sourceId, status: "paid" })
+          });
+      } catch (err) {
+        console.warn("Bridge notify failed", err);
       }
+    }
+    window.location.href = "cofteapos://payment-success";
+  }
 
-      // Optional auto-return after 1.5 seconds
-      setTimeout(notifyAndReturn, 1500);
-    </script>
+  setTimeout(notifyAndReturn, 1500);
+  </script>
   </body>
 </html>
