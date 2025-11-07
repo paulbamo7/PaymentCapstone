@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Payment Complete</title>
+    <style>
+      body { font-family: 'Montserrat', sans-serif; text-align:center; padding:48px; }
+      .cta { display:inline-block; margin-top:32px; padding:14px 26px; border-radius:24px;
+             background:#2E7D32; color:white; text-decoration:none; font-weight:700; }
+    </style>
+  </head>
+  <body>
+    <h1>GCash payment received ✅</h1>
+    <p>You can return to Coftea POS to continue the order.</p>
+    <a class="cta" href="cofteapos://payment-success">Back to Coftea POS</a>
+
+    <script>
+      setTimeout(() => window.location.href = 'cofteapos://payment-success', 1500);
+    </script>
+  </body>
+</html>
