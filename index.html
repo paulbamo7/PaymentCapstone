@@ -30,25 +30,46 @@
   <button class="cta" onclick="notifyAndReturn()">Back to Coftea POS</button>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const sourceId = params.get("source_id");
+  const currentUrl = new URL(window.location.href);
+  let sourceId = currentUrl.searchParams.get("source_id");
 
-    async function notifyAndReturn() {
-      if (sourceId) {
-        try {
-          await fetch("https://dozier-arthur-wistfully.ngrok-free.dev/payment-status/back-to-pos", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ sourceId, status: "paid" })
-          });
-        } catch (err) {
-          console.warn("Bridge notify failed", err);
-        }
+  if (!sourceId && currentUrl.hash) {
+    const hashParams = new URLSearchParams(currentUrl.hash.replace(/^#/, ""));
+    sourceId = hashParams.get("source_id");
+  }
+
+  if (!sourceId && document.referrer) {
+    try {
+      const refUrl = new URL(document.referrer);
+      sourceId = refUrl.searchParams.get("source_id");
+
+      if (!sourceId && refUrl.hash) {
+        const refHashParams = new URLSearchParams(refUrl.hash.replace(/^#/, ""));
+        sourceId = refHashParams.get("source_id");
       }
-      window.location.href = "cofteapos://payment-success";
+    } catch (err) {
+      console.warn("Unable to parse referrer URL", err);
     }
+  }
 
-    setTimeout(notifyAndReturn, 1500);
-  </script>
+  async function notifyAndReturn() {
+    if (sourceId) {
+      try {
+        await fetch("https://dozier-arthur-wistfully.ngrok-free.dev/payment-status/back-to-pos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sourceId, status: "paid" })
+        });
+      } catch (err) {
+        console.warn("Bridge notify failed", err);
+      }
+    } else {
+      console.warn("No source_id found in URL or referrer.");
+    }
+    window.location.href = "cofteapos://payment-success";
+  }
+
+  setTimeout(notifyAndReturn, 1500);
+</script>
 </body>
 </html>
